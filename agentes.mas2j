@@ -1,0 +1,11 @@
+MAS agentes {
+
+	infrastructure: Centralised
+
+	agents:	
+		nask;
+		dekarone;
+		
+	aslSourcePath:
+		"src/asl";
+}
