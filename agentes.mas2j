@@ -2,7 +2,8 @@ MAS agentes {
 
 	infrastructure: Centralised
 
-	agents:	
+	agents:
+		ferpolas;	
 		nask;
 		dekarone;
 		
