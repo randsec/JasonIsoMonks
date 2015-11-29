@@ -3,10 +3,10 @@ MAS agentes {
 	infrastructure: Centralised
 
 	agents:
-		ferpolas;	
-		nask;
-		dekarone;
-		
+		monje1;
+		monje2;
+		monje3;
+				
 	aslSourcePath:
 		"src/asl";
 }

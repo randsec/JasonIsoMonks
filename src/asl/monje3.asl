@@ -1,10 +1,8 @@
-/* Agente nask */
-
 /*Meta del agente */
 !abrirBaul.
 
 /*plan */
-+!abrirBaul : true <- .send(dekarone,tell,saludame).
++!abrirBaul : true <- .send(monje1,tell,saludame).
 
 /*Believes*/
 +hello[source(A)] 

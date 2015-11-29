@@ -1,5 +1,3 @@
-// Agent ferpolas in project JasonIsoMonks
-
 /* Initial beliefs and rules */
 
 /* Initial goals */

@@ -1,4 +1,3 @@
-/* Agente dekarone */
 
 +saludame[source(A)] 
   <- .print("He sido saludado por ",A);
