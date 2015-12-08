@@ -9,11 +9,11 @@ caracter(frayAlejandro,idiota).
 
 /* Plans */
 
-+!start : true <- .print("hello world.").
++!start : true 
+<- .print("hello world.").
 
 +comer[source(A)]
 	: caracter(A,Y)
-	
 	<-	.wait(2000); 
 		.print("(El monje ", A, " me ha invitado a comer... es ", Y, ")");
 		.send(frayFernando,tell,decidirComer(A,Y)).
