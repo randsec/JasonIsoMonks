@@ -1,18 +1,24 @@
-/*Meta del agente */
+/* Initial beliefs and rules */
+/* Conocimientos que el monje2 tiene del entorno */
+estado(self,durmiendo).
+
+/*Initial goals */
 !invitarA.
 
-/*plan */
-+!invitarA : true
+/*Plans */
++!rezar.
+
++!invitarA
 	<- 	.wait(15000); //15 segundos
 		.print("Hola, frayFernando, ¿Vienes a comer conmigo?");
 		.send(frayFernando,tell,comer).
 
-/*Believes*/
-+hello[source(A)] 
-	<-	.print("He sido saludado por ",A);
++saludo[source(A)] 
+		<-	+ caracter(A,simpatico);	// Agrega un belief de que A es simpatico
+		.print("He sido saludado por ",A);
      	.send(A,tell,insultame).
 
-+quetal[source(A)] 
-	<-	.print("soy un mamonazo",A);
-     	.send(A,tell,saludame).   
++rezar(X)
+	: caracter(X,simpatico)
+	<- .print("Ire a rezar con", X).
      

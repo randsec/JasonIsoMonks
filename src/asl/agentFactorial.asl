@@ -2,22 +2,19 @@
 
 /* Initial beliefs and rules */
 fact(0,1).
-/* Initial goals */
 
-!start.
+/* Initial goals */
+!print_fact(6).
+
 
 /* Plans */
++!print_fact(N) 
+	<-	!fact(N,F);
+		.print("Factorial of ", N, " is ", F).
 
-/*
-	+!start : true 
-		<-	.print("Agente factorial operativo").
-* 
-*/
 
-+fact(X,Y)
- : X < 5
- <- +fact(X+1, (X+1)*Y).
- 
-+fact(X,Y)
- : X == 5
- <- .print("fact 5 == ", Y).
++!fact(N,1) : N == 0.
+
++!fact(N,F) : N > 0
+	<-	!fact(N-1,F1);
+		F = F1 * N.

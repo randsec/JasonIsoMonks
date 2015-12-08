@@ -4,13 +4,12 @@ caracter(frayHector,simpatico).
 caracter(frayAlejandro,idiota).
 
 /* Initial goals */
-!start.
 !comer.
 
 /* Plans */
 
 +!start : true 
-<- .print("hello world.").
+	<- .print("Mmmmm... qué hambre.").
 
 +comer[source(A)]
 	: caracter(A,Y)
@@ -20,7 +19,7 @@ caracter(frayAlejandro,idiota).
 		
 +decidirComer(A,Y)
 	: Y == simpatico
-	<- .print("Vale").
+	<- 	.print("Vale").		
 
 +decidirComer(A,Y)
 	: Y == idiota
