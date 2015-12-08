@@ -3,11 +3,11 @@ MAS agentes {
 	infrastructure: Centralised
 
 	agents:
-		r2;
-		r1;
-		monje1;
-		monje2;
-		monje3;
+		agentFactorial;
+		dios;
+		frayAlejandro;
+		frayFernando;
+		frayHector;
 				
 	aslSourcePath:
 		"src/asl";
