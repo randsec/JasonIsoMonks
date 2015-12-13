@@ -9,4 +9,9 @@
 /* Plans */
 
 +!start : true
-	<- .print("hello world.").
+	<- 	.print("Dios controla a los monjes");
+		.wait(3000);
+		.send(frayHector,tell,interactuar(frayFernando,saludo));
+		.wait(3000);
+		.send(frayHector,tell,interactuar(frayFernando,comer)).
+		

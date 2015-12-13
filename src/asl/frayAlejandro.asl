@@ -5,7 +5,7 @@
 !invitarA.
 
 /*Plans */
-+!invitarA : true
++!invitarA
 	<- 	.wait(5000); //5 segundos
 		.print("Hola, frayFernando, ¿Vienes a comer conmigo?");
 		.send(frayFernando,tell,comer).
@@ -17,3 +17,7 @@
 	<-	+caracter(A,antipatico);	// Agrega el belief de que A es antipatico
   		.print("No me insultes, ",A, ", eres un antipático");
   	 	.send(A,tell, quetal).     
+  	 	
++interactuar(PERSONA,ACCION)
+	<- 	.print("Interactuar con ", PERSONA, " con la accion ", ACCION);
+		.send(PERSONA,tell,ACCION).

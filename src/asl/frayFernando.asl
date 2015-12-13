@@ -5,11 +5,15 @@ caracter(frayAlejandro,idiota).
 
 /* Initial goals */
 !comer.
+!start.
 
 /* Plans */
 
 +!start : true 
 	<- .print("Mmmmm... qué hambre.").
+
++saludo[source(A)] 
+  <- .print("He sido saludado por ",A).
 
 +comer[source(A)]
 	: caracter(A,Y)
@@ -25,3 +29,6 @@ caracter(frayAlejandro,idiota).
 	: Y == idiota
 	<- .print("No, gracias, iré más tarde.").
 	
++interactuar(PERSONA,ACCION)
+	<- 	.print("Interactuar con ", PERSONA, " con la accion ", ACCION);
+		.send(PERSONA,tell,ACCION).

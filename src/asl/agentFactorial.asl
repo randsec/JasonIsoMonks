@@ -8,6 +8,7 @@ fact(0,1).
 
 
 /* Plans */
+
 +!print_fact(N) 
 	<-	!fact(N,F);
 		.print("Factorial of ", N, " is ", F).
