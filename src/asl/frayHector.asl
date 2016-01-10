@@ -1,5 +1,5 @@
 /* Initial beliefs and rules */
-/* Conocimientos que el monje2 tiene del entorno */
+/* Conocimientos que el frayHector tiene del entorno */
 estado(self,durmiendo).
 
 /*Initial goals */

@@ -3,6 +3,7 @@ MAS agentes {
 	infrastructure: Centralised
 
 	agents:
+		frayFede;
 		agentFactorial;
 		dios;
 		frayAlejandro;
