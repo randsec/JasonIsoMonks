@@ -1,3 +1,5 @@
+import jason.JasonException;
+import jason.asSemantics.Agent;
 import jason.asSyntax.*;
 
 import jason.environment.*;
@@ -5,26 +7,31 @@ import jason.environment.*;
 public class Abadia extends Environment {
 	
 	// any class members needed...
-	int[] posLibro = {5,2};
+	private int[] posLibro = {5,2};
 	
 	
 	@Override
 	public void init(String[] args) {
+		//De momento vamos a crear dos agentes al inicializar
+		//Agent agente_frayFernando = new Agent();
+		//Agent agente_frayAlejandro = new Agent();
 		
-		// setting initial (global) percepts ...
+
+		// Se establecen las percepciones globales que tendrán todos los agentes en el entorno
+		addPercept(Literal.parseLiteral("dia(lunes)"));
+		addPercept(Literal.parseLiteral("mes(febrero)"));
+		addPercept(Literal.parseLiteral("anyo(1987)"));
+		addPercept(Literal.parseLiteral("clima(soleado)"));
 		
-		addPercept(Literal.parseLiteral("p(a)"));
+		// Se establecen las percepciones individuales para cada agente
+		addPercept("frayAlejandro", Literal.parseLiteral("humor(enfadado)"));
+		addPercept("frayAlejandro", Literal.parseLiteral("dolor(espalda)"));
+		addPercept("frayAlejandro", Literal.parseLiteral("caracter(frayFernando,antipatico)"));
+		addPercept("frayAlejandro", Literal.parseLiteral("hambre(alta)"));
 		
-		// if open-world is begin used, there can be
-		
-		// negated literals such as ...
-		
-		addPercept(Literal.parseLiteral("~q(b)"));
-		
-		// if this is to be perceived only by agent ag1
-		
-		addPercept("ag1", Literal.parseLiteral("p(a)"));
-		
+		addPercept("frayFernando", Literal.parseLiteral("humor(normal)"));
+		addPercept("frayFernando", Literal.parseLiteral("caracter(frayAlejandro,arisco)"));
+		addPercept("frayFernando", Literal.parseLiteral("hambre(media)"));
 	}
 	
 	@Override
@@ -38,14 +45,28 @@ public class Abadia extends Environment {
 	
 	@Override
 	
-	public boolean executeAction(String ag, Structure act) {
+	/**
+	 * En esencia este método es un parser que llamará a unos métodos o variables
+	 * declarados en un Modelo que se haya establecido
+	 * 
+	 * Ver #113 del libro
+	 */
+	public boolean executeAction(String agente, Structure accion) {
 		
 		// this is the most important method, where the
 		
 		// effects of agent actions on perceptible properties
 		
 		// of the environment is defined
-		return true;
+		boolean success = false;
+		
+		if(accion.equals("invitarComer")){	// Creo que no son strings, sino metodos
+			
+		}
+		else if(accion.equals("hablar")){
+		
+		}
+		return success;
 		
 	}
 	
