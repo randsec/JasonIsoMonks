@@ -1,7 +1,9 @@
 MAS agentes {
 
 	infrastructure: Centralised
-
+	
+	environment: Abadia
+	
 	agents:
 		frayFede;
 		agentFactorial;

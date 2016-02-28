@@ -1,14 +1,15 @@
-import jason.JasonException;
-import jason.asSemantics.Agent;
-import jason.asSyntax.*;
-
-import jason.environment.*;
+import jason.asSyntax.Literal;
+import jason.asSyntax.Structure;
+import jason.environment.Environment;
 
 public class Abadia extends Environment {
 	
 	// any class members needed...
-	private int[] posLibro = {5,2};
-	
+	public static final Literal llamar_misa = Literal.parseLiteral("llamar(misa)");
+	public static final Literal llamar_comida = Literal.parseLiteral("llamar(comida)");
+	public static final Literal hablar = Literal.parseLiteral("hablar(agente,mensaje)");
+
+	public AbadiaModel model;
 	
 	@Override
 	public void init(String[] args) {
@@ -16,7 +17,8 @@ public class Abadia extends Environment {
 		//Agent agente_frayFernando = new Agent();
 		//Agent agente_frayAlejandro = new Agent();
 		
-
+		model = new AbadiaModel();
+		
 		// Se establecen las percepciones globales que tendrán todos los agentes en el entorno
 		addPercept(Literal.parseLiteral("dia(lunes)"));
 		addPercept(Literal.parseLiteral("mes(febrero)"));
@@ -24,14 +26,14 @@ public class Abadia extends Environment {
 		addPercept(Literal.parseLiteral("clima(soleado)"));
 		
 		// Se establecen las percepciones individuales para cada agente
-		addPercept("frayAlejandro", Literal.parseLiteral("humor(enfadado)"));
-		addPercept("frayAlejandro", Literal.parseLiteral("dolor(espalda)"));
-		addPercept("frayAlejandro", Literal.parseLiteral("caracter(frayFernando,antipatico)"));
-		addPercept("frayAlejandro", Literal.parseLiteral("hambre(alta)"));
+		addPercept("frayGuillermo", Literal.parseLiteral("humor(enfadado)"));
+		addPercept("frayGuillermo", Literal.parseLiteral("dolor(espalda)"));
+		addPercept("frayGuillermo", Literal.parseLiteral("caracter(adso,vivaz)"));
+		addPercept("frayGuillermo", Literal.parseLiteral("hambre(alta)"));
 		
-		addPercept("frayFernando", Literal.parseLiteral("humor(normal)"));
-		addPercept("frayFernando", Literal.parseLiteral("caracter(frayAlejandro,arisco)"));
-		addPercept("frayFernando", Literal.parseLiteral("hambre(media)"));
+		addPercept("adso", Literal.parseLiteral("humor(normal)"));
+		addPercept("adso", Literal.parseLiteral("caracter(frayGuillermo,arisco)"));
+		addPercept("adso", Literal.parseLiteral("hambre(media)"));
 	}
 	
 	@Override
@@ -44,27 +46,23 @@ public class Abadia extends Environment {
 	}
 	
 	@Override
-	
-	/**
-	 * En esencia este método es un parser que llamará a unos métodos o variables
-	 * declarados en un Modelo que se haya establecido
-	 * 
-	 * Ver #113 del libro
-	 */
 	public boolean executeAction(String agente, Structure accion) {
 		
-		// this is the most important method, where the
-		
-		// effects of agent actions on perceptible properties
-		
-		// of the environment is defined
+		System.out.println("Agente [" + agente + "] ejecutando accion: " + accion);
+
 		boolean success = false;
 		
-		if(accion.equals("invitarComer")){	// Creo que no son strings, sino metodos
-			
+		if(accion.equals(llamar_comida)){
+			success = model.llamar_comida();
 		}
-		else if(accion.equals("hablar")){
-		
+		else if(accion.equals(llamar_misa)){
+			success = model.llamar_misa();
+		}
+		else if(accion.getFunctor().equals("hablar")){
+			String interlocutor = accion.getTerm(0).toString();
+			String mensaje = accion.getTerm(1).toString();
+			
+			success = model.hablar(agente, interlocutor, mensaje);
 		}
 		return success;
 		
