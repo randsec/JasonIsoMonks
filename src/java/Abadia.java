@@ -1,6 +1,9 @@
+import java.util.List;
+
 import jason.asSyntax.Literal;
 import jason.asSyntax.Structure;
 import jason.environment.Environment;
+import jason.stdlib.foreach;
 
 public class Abadia extends Environment {
 	
@@ -9,40 +12,21 @@ public class Abadia extends Environment {
 	public static final Literal llamar_comida = Literal.parseLiteral("llamar(comida)");
 	public static final Literal hablar = Literal.parseLiteral("hablar(agente,mensaje)");
 
-	public AbadiaModel model;
+	public static AbadiaModel model = null;
 	
 	@Override
 	public void init(String[] args) {
-		//De momento vamos a crear dos agentes al inicializar
-		//Agent agente_frayFernando = new Agent();
-		//Agent agente_frayAlejandro = new Agent();
 		
-		model = new AbadiaModel();
+		if (model == null)
+			model = new AbadiaModel();
 		
-		// Se establecen las percepciones globales que tendrán todos los agentes en el entorno
-		addPercept(Literal.parseLiteral("dia(lunes)"));
-		addPercept(Literal.parseLiteral("mes(febrero)"));
-		addPercept(Literal.parseLiteral("anyo(1987)"));
-		addPercept(Literal.parseLiteral("clima(soleado)"));
-		
-		// Se establecen las percepciones individuales para cada agente
-		addPercept("frayGuillermo", Literal.parseLiteral("humor(enfadado)"));
-		addPercept("frayGuillermo", Literal.parseLiteral("dolor(espalda)"));
-		addPercept("frayGuillermo", Literal.parseLiteral("caracter(adso,vivaz)"));
-		addPercept("frayGuillermo", Literal.parseLiteral("hambre(alta)"));
-		
-		addPercept("adso", Literal.parseLiteral("humor(normal)"));
-		addPercept("adso", Literal.parseLiteral("caracter(frayGuillermo,arisco)"));
-		addPercept("adso", Literal.parseLiteral("hambre(media)"));
+		updatePerceptsFromModel();
 	}
 	
 	@Override
 	public void stop() {
-		
 		// anything else to be done by the environment when
-		
 		// the system is stopped...
-		
 	}
 	
 	@Override
@@ -66,6 +50,20 @@ public class Abadia extends Environment {
 		}
 		return success;
 		
+	}
+		
+	/**
+	 * Recoge las percepciones que haya almacenadas en el modelo y las transporta al Entorno
+	 */
+	public void updatePerceptsFromModel(){
+		for(String nombre : model.getNombres()) {
+			if (nombre == "entorno")
+				for(String percepcionDeEntorno : model.getPercepciones().get(nombre))
+					addPercept(Literal.parseLiteral(percepcionDeEntorno));
+			else
+				for(String percepcionDePersonaje : model.getPercepciones().get(nombre))
+					addPercept(nombre, Literal.parseLiteral(percepcionDePersonaje));
+		}
 	}
 	
 }

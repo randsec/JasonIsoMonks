@@ -1,24 +1,32 @@
-import java.util.List;
 import jason.JasonException;
-import jason.asSyntax.Literal;
-import jason.asSyntax.Term;
 import jason.mas2j.parser.ParseException;
 
 public class MainClass {
 	
+
 	public static void main(String[] args) throws ParseException, JasonException {
-		System.out.println("EJECUTANDO A LA VEZ");
+		
 		Abadia abadia = new Abadia();
 		abadia.init(null);
 		
 		// frayGuillermo y Adso 
-		
 		System.out.println("Percepciones del Entorno: " + abadia.getPercepts(""));
 		System.out.println("Percepciones de Fray Guillermo: " + abadia.getPercepts("frayGuillermo"));
-		//System.out.println("Percepciones de Adso: " + abadia.getPercepts("adso"));
-		// cuando se pone el "getPercepts" se quitan del entorno D: !!!!
+		System.out.println("Percepciones de Adso: " + abadia.getPercepts("adso"));
+		abadia.updatePerceptsFromModel();
+
+		// Cada vez que se hace un getPercepts, éstos desaparecen del Environment
+		// Pero siguen almacenado en el Model, por lo que habrá que llamar a establecerPerceptsDelModelo
+		abadia.model.agregarPercepcion("adso", "dolor(cabeza)");
+
+		System.out.println("Percepciones de Adso: " + abadia.getPercepts("adso"));
+
+
+		// RECIBE UN COMANDO QUE SERA UN JSON DE VETE A SABER DONDE
+		String JSONrecibido = "{\"name\":\"move\",\"parameters\":{\"entity\":9084,\"cell\":9200}}";
+		String accion = JSON_Manager.actionSwitcher(JSONrecibido);
+		System.out.println(accion);
 		
-		System.out.println(perceptionListToJSON(abadia.getPercepts("adso")));
 		
 		/**
 		abadia.executeAction("frayGuillermo", new Structure(Literal.parseLiteral("llamar(comida)")));
@@ -27,38 +35,4 @@ public class MainClass {
 		*/
 		
 	}
-	
-	public static String perceptionListToJSON(List<Literal> percepts){
-		String JSON = "{";
-		
-		for (Literal literal : percepts) {
-			JSON += '"' + literal.getFunctor() + '"' + ":";
-			
-			List<Term> terminos = literal.getTerms();
-			if (terminos.size() == 0)
-				JSON += '"' + '"';
-			else if (terminos.size() == 1) 
-				JSON += '"' + literal.getTerm(0).toString() + '"';
-			else{
-				JSON += '[';
-				for (Term term : terminos) {
-					JSON += '"' + term.toString() + '"' + ",";
-				}
-				JSON = JSON.substring(0, JSON.length()-1);
-				JSON += ']';
-			}
-			JSON += ",";
-		}		
-		
-		JSON = JSON.substring(0, JSON.length()-1);
-		JSON += "}";
-		
-		return JSON;
-	}
-	
-	public static List<Literal> JSONtoPerceptionList(String JSON){
-		// {"name":"move","parameters":{"entity":9084,"cell":9200}}
-		return null;
-	}
-	
 }
