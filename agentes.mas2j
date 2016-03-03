@@ -2,7 +2,7 @@ MAS agentes {
 
 	infrastructure: Centralised
 	
-	environment: Abadia
+	environment: Abadia("") //sin parametros
 	
 	agents:
 		frayFede;
@@ -11,6 +11,7 @@ MAS agentes {
 		frayAlejandro;
 		frayFernando;
 		frayHector;
+		pantumaca;
 				
 	aslSourcePath:
 		"src/asl";

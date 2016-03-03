@@ -1,9 +1,7 @@
-import java.util.List;
-
+import conexion.MainConnection;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Structure;
 import jason.environment.Environment;
-import jason.stdlib.foreach;
 
 public class Abadia extends Environment {
 	
@@ -13,12 +11,16 @@ public class Abadia extends Environment {
 	public static final Literal hablar = Literal.parseLiteral("hablar(agente,mensaje)");
 
 	public static AbadiaModel model = null;
+	public static MainConnection connection = null;
 	
 	@Override
 	public void init(String[] args) {
 		
-		if (model == null)
-			model = new AbadiaModel();
+		connection = new MainConnection();
+		model = new AbadiaModel();
+		
+		System.out.println("ay elemaos");
+		connection.lanzarConexion(null);
 		
 		updatePerceptsFromModel();
 	}

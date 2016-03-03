@@ -1,8 +1,8 @@
 package conexion;
 
-public class Main {
-	/**
-	static public void main( String args[] ) {
+public class MainConnection {
+	
+	static public void lanzarConexion(String args[] ) {
 		System.out.println("=== START ===");
 		        
         Thread Server = new Thread( new Server(), "server" );
@@ -11,5 +11,5 @@ public class Main {
         Server.start();
         Client.start();        
     }
-    */
+    
 }

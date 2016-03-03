@@ -19,7 +19,9 @@ public class Client extends Thread {
 			String sentence;
 			do {
 				System.out.print("Client send > ");
+				//Cambiar el modo de introduccion de datos para que lo coja de algun lado
 				sentence = inFromUser.readLine();
+
 				sendData = sentence.getBytes();
 				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, dc.PortSend);
 				clientSocket.send(sendPacket);
@@ -29,7 +31,10 @@ public class Client extends Thread {
 				modifiedSentence = modifiedSentence.substring(0, receivePacket.getLength());
 				System.out.println("Client Received: " + modifiedSentence);
 			} while(!sentence.equals("exit"));
-			if (sentence.equals("exit")) { System.out.println("=== FINISH ==="); }
+			
+			if (sentence.equals("exit"))
+				System.out.println("=== FINISH ===");
+			
 			clientSocket.close();
 		} catch (Exception e) {
 			System.out.println("Error Client: " + e.getMessage());
