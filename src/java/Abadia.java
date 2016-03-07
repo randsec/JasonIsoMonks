@@ -22,7 +22,12 @@ public class Abadia extends Environment {
 		System.out.println("ay elemaos");
 		connection.lanzarConexion(null);
 		
-		updatePerceptsFromModel();
+		addPercept(Literal.parseLiteral("dia(lunes)"));
+		addPercept(Literal.parseLiteral("mes(febrero)"));
+		addPercept(Literal.parseLiteral("anyo(1987)"));
+		addPercept(Literal.parseLiteral("clima(soleado)"));
+
+		System.out.println(consultPercepts("adso"));
 	}
 	
 	@Override
@@ -54,18 +59,5 @@ public class Abadia extends Environment {
 		
 	}
 		
-	/**
-	 * Recoge las percepciones que haya almacenadas en el modelo y las transporta al Entorno
-	 */
-	public void updatePerceptsFromModel(){
-		for(String nombre : model.getNombres()) {
-			if (nombre == "entorno")
-				for(String percepcionDeEntorno : model.getPercepciones().get(nombre))
-					addPercept(Literal.parseLiteral(percepcionDeEntorno));
-			else
-				for(String percepcionDePersonaje : model.getPercepciones().get(nombre))
-					addPercept(nombre, Literal.parseLiteral(percepcionDePersonaje));
-		}
-	}
 	
 }

@@ -1,3 +1,4 @@
+import conexion.MainConnection;
 import jason.JasonException;
 import jason.asSemantics.Agent;
 import jason.asSyntax.Literal;
@@ -38,6 +39,7 @@ public class MainClass {
 		abadia.executeAction("frayGuillermo", new Structure(Literal.parseLiteral("llamar(misa)")));
 		abadia.executeAction("adso", new Structure(Literal.parseLiteral("hablar(frayGuillermo,eres_mu_tonto)")));
 		*/
+		MainConnection.lanzarConexion(null);
 		
 	}
 }

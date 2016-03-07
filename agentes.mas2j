@@ -5,13 +5,17 @@ MAS agentes {
 	environment: Abadia("") //sin parametros
 	
 	agents:
-		frayFede;
-		agentFactorial;
-		dios;
-		frayAlejandro;
-		frayFernando;
-		frayHector;
-		pantumaca;
+		frayGuillermo;
+		adso;
+		/**
+		 * frayFede;
+		 * agentFactorial;
+		 * dios;
+		 * frayAlejandro;
+		 * frayFernando;
+		 * frayHector;
+		 * pantumaca;
+		 */
 				
 	aslSourcePath:
 		"src/asl";
