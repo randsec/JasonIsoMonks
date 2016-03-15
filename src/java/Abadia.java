@@ -20,6 +20,7 @@ public class Abadia extends Environment {
 		model = new AbadiaModel();
 		
 		System.out.println("ay elemaos");
+		
 		connection.lanzarConexion(null);
 		
 		addPercept(Literal.parseLiteral("dia(lunes)"));

@@ -6,7 +6,7 @@ public class Server extends Thread{
     public void run() {
     	try {
     		DataConection dc = new DataConection();
-			DatagramSocket serverSocket = new DatagramSocket(dc.PortReceived);
+			DatagramSocket serverSocket = new DatagramSocket(dc.exitPort);
 			byte[] receiveData = new byte[1024];
 			byte[] sendData = new byte[1024];
 			boolean next = true;
@@ -15,7 +15,7 @@ public class Server extends Thread{
 				serverSocket.receive(receivePacket);				
 				String sentence = new String(receivePacket.getData());
 				sentence = sentence.substring(0, receivePacket.getLength());
-				System.out.println("Server Received: " + sentence);
+				System.out.println("resibido: " + sentence);
 				InetAddress IPAddress = receivePacket.getAddress();
 				int port = receivePacket.getPort();
 				
@@ -24,8 +24,9 @@ public class Server extends Thread{
 					capitalizedSentence = "adios";
 				}
 				
-				sendData = capitalizedSentence.getBytes();
-				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
+				//sendData = capitalizedSentence.getBytes(); //mayus
+				byte[] sentence_polas = sentence.getBytes();
+				DatagramPacket sendPacket = new DatagramPacket(sentence_polas, sentence_polas.length, IPAddress, dc.enterPort);
 				serverSocket.send(sendPacket);
 				if (sentence.equals("exit")) {
 					serverSocket.close(); 

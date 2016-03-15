@@ -39,6 +39,10 @@ public class MainClass {
 		abadia.executeAction("frayGuillermo", new Structure(Literal.parseLiteral("llamar(misa)")));
 		abadia.executeAction("adso", new Structure(Literal.parseLiteral("hablar(frayGuillermo,eres_mu_tonto)")));
 		*/
+		
+		/**
+		 * {"name":"move","parameters":{"entity":10500,"cell":10518}}
+		 */
 		MainConnection.lanzarConexion(null);
 		
 	}

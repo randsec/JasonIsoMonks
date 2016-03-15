@@ -23,7 +23,7 @@ public class Client extends Thread {
 				sentence = inFromUser.readLine();
 
 				sendData = sentence.getBytes();
-				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, dc.PortSend);
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, dc.enterPort);
 				clientSocket.send(sendPacket);
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				clientSocket.receive(receivePacket);
