@@ -7,15 +7,15 @@ MAS agentes {
 	agents:
 		frayGuillermo;
 		adso;
-		/**
-		 * frayFede;
-		 * agentFactorial;
-		 * dios;
-		 * frayAlejandro;
-		 * frayFernando;
-		 * frayHector;
-		 * pantumaca;
-		 */
+		
+		  frayFede;
+		  
+		  agentFactorial;
+		  dios;
+		  frayAlejandro;
+		  frayFernando;
+		  frayHector;
+		  pantumaca;
 				
 	aslSourcePath:
 		"src/asl";

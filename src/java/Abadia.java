@@ -19,7 +19,7 @@ public class Abadia extends Environment {
 		connection = new MainConnection();
 		model = new AbadiaModel();
 		
-		System.out.println("ay elemaos");
+		System.out.println("eeeeee");
 		
 		connection.lanzarConexion(null);
 		
