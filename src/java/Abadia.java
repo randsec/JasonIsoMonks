@@ -19,16 +19,16 @@ public class Abadia extends Environment {
 		connection = new MainConnection();
 		model = new AbadiaModel();
 		
-		System.out.println("eeeeee");
+		//System.out.println("eeeeee");
 		
 		connection.lanzarConexion(null);
 		
-		addPercept(Literal.parseLiteral("dia(lunes)"));
+		/*addPercept(Literal.parseLiteral("dia(lunes)"));
 		addPercept(Literal.parseLiteral("mes(febrero)"));
 		addPercept(Literal.parseLiteral("anyo(1987)"));
-		addPercept(Literal.parseLiteral("clima(soleado)"));
+		addPercept(Literal.parseLiteral("clima(soleado)"));*/
 
-		System.out.println(consultPercepts("adso"));
+		//System.out.println(consultPercepts("adso"));
 	}
 	
 	@Override

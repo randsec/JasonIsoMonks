@@ -1,4 +1,4 @@
-// Agent adso in project JasonIsoMonks
+// Agent System in project JasonIsoMonks
 
 /* Initial beliefs and rules */
 caracter(frayGuillermo,arisco).
@@ -10,4 +10,4 @@ ubicacion(habitacion).
 
 /* Plans */
 
-+!start : true <- .print("hello world.").
++!start : true <- .print("IA Loaded").
