@@ -6,10 +6,10 @@ public class MainConnection {
 		System.out.println("=== START ===");
 		        
         Thread Server = new Thread( new Server(), "server" );
-        Thread Client = new Thread( new Client(), "client" );
+        //Thread Client = new Thread( new Client(), "client" );
         
         Server.start();
-        Client.start();        
+        //Client.start();        
     }
     
 }
