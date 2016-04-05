@@ -20,7 +20,7 @@ public class Server extends Thread{
 		}
 	}
 	
-	private void waitToTalk() {
+	private void receiveAndSend() {
 		try {
     		DataConection dc = new DataConection();
 			DatagramSocket serverSocket = new DatagramSocket(dc.exitPort);
@@ -35,10 +35,8 @@ public class Server extends Thread{
 				InetAddress IPAddress = receivePacket.getAddress();
 				int port = receivePacket.getPort();
 				
-				show(">>", receivedsentence);
 				String sentSentence = receivedsentence;
-				//String sentSentence = "{\"name\":\"move\",\"parameters\":{\"entity\":9580,\"cell\":-57800}}";
-				show("<<", sentSentence);
+				System.out.println(receivedsentence);
 								
 				byte[] sentSentence_bytes = sentSentence.getBytes();
 				DatagramPacket sendPacket = new DatagramPacket(sentSentence_bytes, sentSentence_bytes.length, IPAddress, dc.enterPort);
@@ -49,9 +47,8 @@ public class Server extends Thread{
     	}
 	}
 	
-	public void talk() {
+	public void send() {
 		try {
-			//System.in.read();
 			DataConection dc = new DataConection();
 			@SuppressWarnings("resource")
 			DatagramSocket serverSocket = new DatagramSocket(dc.exitPort);
@@ -70,7 +67,7 @@ public class Server extends Thread{
 	}
 	
     public void run() {
-    	//this.waitToTalk();
-    	this.talk(); 
+    	this.receiveAndSend();
+    	//this.send(); 
     }
 }
