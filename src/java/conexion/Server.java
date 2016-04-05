@@ -37,6 +37,7 @@ public class Server extends Thread{
 				
 				String sentSentence = receivedsentence;
 				System.out.println(receivedsentence);
+//String sentSentence = "{\"name\":\"move\",\"parameters\":{\"entity\":9580,\"cell\":-57800}}";
 								
 				byte[] sentSentence_bytes = sentSentence.getBytes();
 				DatagramPacket sendPacket = new DatagramPacket(sentSentence_bytes, sentSentence_bytes.length, IPAddress, dc.enterPort);
