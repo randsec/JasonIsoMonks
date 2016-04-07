@@ -1,8 +1,8 @@
 // Agent System in project JasonIsoMonks
 
 /* Initial beliefs and rules */
-caracter(frayGuillermo,arisco).
-ubicacion(habitacion).
+//caracter(frayGuillermo,arisco).
+//ubicacion(habitacion).
 
 /* Initial goals */
 

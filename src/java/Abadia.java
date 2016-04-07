@@ -1,4 +1,4 @@
-import conexion.MainConnection;
+import conexion.Connection;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Structure;
 import jason.environment.Environment;
@@ -10,18 +10,15 @@ public class Abadia extends Environment {
 	public static final Literal llamar_comida = Literal.parseLiteral("llamar(comida)");
 	public static final Literal hablar = Literal.parseLiteral("hablar(agente,mensaje)");
 
-	public static AbadiaModel model = null;
-	public static MainConnection connection = null;
+	public static AbadiaModel model;
 	
 	@Override
 	public void init(String[] args) {
 		
-		connection = new MainConnection();
 		model = new AbadiaModel();
 		
-		//System.out.println("eeeeee");
-		
-		connection.lanzarConexion(null);
+		System.out.println("Start Jason Connection...");
+		new Thread( Connection.getInstance(), "connection" ).start();
 		
 		/*addPercept(Literal.parseLiteral("dia(lunes)"));
 		addPercept(Literal.parseLiteral("mes(febrero)"));
