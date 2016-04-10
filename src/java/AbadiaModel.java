@@ -6,10 +6,9 @@ import conexion.ConnectionImp;
 
 public class AbadiaModel {   
 
-	private static AbadiaModel instance;
-
-	private HashMap<Integer,String> entities;
-	private ArrayList<Integer> cells;
+	private HashMap<String,Integer> entities;
+	private HashMap<String,Integer> decorations;
+	private HashMap<Integer, String> cells;
 
 	private int hour;
 	private int minutes;
@@ -20,11 +19,34 @@ public class AbadiaModel {
 	   this.minutes = 00;
 	   this.weather = "shiny";
 	   
-	   this.entities = Connection.getInstance().getEntities();
-	   this.cells = Connection.getInstance().getCells();
+	   actualizarElementos();
    }
       
+   public void actualizarElementos(){
+	   this.entities = Connection.getInstance().getEntities();
+	   this.cells = Connection.getInstance().getCells();
+	   this.decorations = Connection.getInstance().getDecorations();
+   }
    //////////////////////////////
+   public boolean moverAgenteADecoracion(String agentName, String decorationName){
+	   boolean status = false;
+	   actualizarElementos();
+	   
+	   if (entities.containsKey(agentName) && decorations.containsKey(decorationName)){
+		   int agentId = entities.get(agentName);
+		   int decorationCell = entities.get(decorationName);
+		   
+		   moverEntidadACelda(agentId, decorationCell);
+	   }
+	   
+	   return status;
+   }
+   
+   public boolean moverEntidadACelda(int entity, int cell){
+	   String json_command = "{\"name\":\"move\",\"parameters\":{\"entity\":" + entity + ",\"cell\":" + cell + "}}";
+	   
+	   return Connection.getInstance().sendCommand(json_command);
+   }
    
    public Thread getThreadByName(String id){
 	   for (Thread t : Thread.getAllStackTraces().keySet()){ 

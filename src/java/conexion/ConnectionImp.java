@@ -6,18 +6,26 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.json.JSONObject;
 
+import jason.util.Pair;
+
 public class ConnectionImp extends Connection {
 	
-	private HashMap<Integer,String> entities;
-	private ArrayList<Integer> cells;
+	private HashMap<String,Integer> entities;
+	private HashMap<String,Integer> decorations;
+	
+	private HashMap<Integer,String> cells;
 	
 	public ConnectionImp() {
-		this.entities = new HashMap<Integer,String>();
-		this.cells = new ArrayList<Integer>();
+		this.entities = new HashMap<String,Integer>();
+		this.decorations = new HashMap<String,Integer>();
+		
+		this.cells = new HashMap<Integer,String>();
 	}
 	
     public void run() {
@@ -29,8 +37,15 @@ public class ConnectionImp extends Connection {
     	}
     }
         
-	private int getRandomCell(){		
-		return this.cells.get(new Random().nextInt(this.cells.size()));
+    /**
+     * Obtiene el identificador de una celda registrada del mapa
+     * @return
+     */
+	private int getRandomCellPosition(){	
+		List<Integer> keys      = new ArrayList<Integer>(this.cells.keySet());
+		Integer       randomKey = keys.get(new Random().nextInt(keys.size()));
+
+		return randomKey.intValue();
 	}    
     
     /**
@@ -42,17 +57,19 @@ public class ConnectionImp extends Connection {
 	private boolean registerCell(JSONObject json){
 		boolean status = false;
 		int cell = json.getInt("cell");
-		
-		if (!this.cells.contains(cell))
-			status = this.cells.add(cell);
-		
-		/**
-		if (!status)
-			System.out.println("	La celda " + cell + " ya estaba registrada");
-		*/
+				
+		if (!this.cells.containsKey(cell)){
+			if(json.has("cellDescription")){
+				String desc = json.getString("cellDescription");
+				cells.put(cell, desc);
+				System.out.println("La celda " + cell + "tiene una descripcion " + desc);
+			}
+			else
+				cells.put(cell, "");
+			status = true;
+		}
 		
 		return status;
-
 	}
 	
 	/**
@@ -68,7 +85,7 @@ public class ConnectionImp extends Connection {
 		
 		
 		if (!this.entities.containsKey(entity)) {
-			this.entities.put(entity, entityName);			
+			this.entities.put(entityName,entity);			
 			System.out.println("	NUEVA ENTIDAD REGISTRADA: " + entityName + "(entidad " + entity + ")");
 			status = true;
 		} else 
@@ -76,6 +93,25 @@ public class ConnectionImp extends Connection {
 		
 		
 		return status;
+	}
+	
+	private boolean registerDecoration(JSONObject json){
+		boolean status = false;
+		int decoration = json.getInt("decoration");
+		int cell = json.getInt("cell");
+		String decorationName = json.getString("decorationName");
+		
+		
+		if (!this.decorations.containsKey(decoration)) {
+			this.decorations.put(decorationName, cell);			
+			System.out.println("	NUEVA DECORACIÓN REGISTRADA: " + decorationName + "(" + decoration + ") en la celda " + cell);
+			status = true;
+		} else 
+			System.out.println("	La decoracion " + decoration + " ya ha sido registrada con nombre " + this.decorations.get(decoration));
+		
+		
+		return status;
+
 	}
 	
 	/**
@@ -96,13 +132,17 @@ public class ConnectionImp extends Connection {
 				if (this.registerEntity(json.getJSONObject("parameters"))) {					
 					JSONObject parametersJSON = json.getJSONObject("parameters");
 					int entity = parametersJSON.getInt("entity");
-					int celda = this.getRandomCell();
+					int celda = 9548; // Esta es la celda del tomate (se debe sacar cuando se registre)
+					//int celda = this.getRandomCellPosition();
 					
 					result = "{\"name\":\"move\",\"parameters\":{\"entity\":" + entity + ",\"cell\":" + celda + "}}";
 				} else { result = ""; }
 				break;
 			case "registerCell":
 				this.registerCell(json.getJSONObject("parameters"));
+			break;
+			case "registerDecoration":
+				this.registerDecoration(json.getJSONObject("parameters"));
 			break;
 			default: break;
 		}
@@ -118,6 +158,7 @@ public class ConnectionImp extends Connection {
 	 */
 	private void show(String direction, String data) {
 		if (!data.isEmpty()) {
+			//System.out.println(data);
 			ArrayList<String> security_names = new ArrayList<String>();
 			security_names.addAll(Arrays.asList("move", "turn", "registerEntity", "registerCell"));
 			JSONObject json = new JSONObject(data);
@@ -197,14 +238,32 @@ public class ConnectionImp extends Connection {
 	  }
 
 	@Override
-	public HashMap<Integer, String> getEntities() {
+	public HashMap<String, Integer> getEntities() {
 		return this.entities;
 	}
 
 	@Override
-	public ArrayList<Integer> getCells() {
+	public HashMap<Integer, String> getCells() {
 		return this.cells;
 	}
 	
+	@Override
+	public HashMap<String, Integer> getDecorations() {
+		return this.decorations;
+	}
+	
+	public boolean sendCommand(String json){
+		boolean status = false;
+		
+		try{
+			send(json);
+			status = true;
+		}
+		catch (Exception e) {
+				System.out.println("Error Sending Command: " + e.getMessage());
+		}
+
+		return status;
+	}
 	
 }

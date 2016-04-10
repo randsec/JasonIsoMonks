@@ -16,7 +16,11 @@ public abstract class Connection extends Thread{
 		
     public abstract void run();
     
-    public abstract HashMap<Integer, String> getEntities();
-    public abstract ArrayList<Integer> getCells();
+    public abstract HashMap<String, Integer> getEntities();
+    public abstract HashMap<String, Integer> getDecorations();
+    public abstract HashMap<Integer, String> getCells();
+    
+    public abstract boolean sendCommand(String command);
+
     
 }

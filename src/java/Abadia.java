@@ -18,7 +18,8 @@ public class Abadia extends Environment {
 		new Thread( Connection.getInstance(), "connection" ).start();
 		
 		model = new AbadiaModel();
-
+		
+		model.moverAgenteADecoracion("frayFernando", "tomatoCool");
 
 		// MIERDA
 		/*
