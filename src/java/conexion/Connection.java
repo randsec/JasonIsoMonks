@@ -1,5 +1,8 @@
 package conexion;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public abstract class Connection extends Thread{
 	
 	private static Connection instance;
@@ -12,4 +15,8 @@ public abstract class Connection extends Thread{
     }
 		
     public abstract void run();
+    
+    public abstract HashMap<Integer, String> getEntities();
+    public abstract ArrayList<Integer> getCells();
+    
 }

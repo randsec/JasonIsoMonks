@@ -8,7 +8,6 @@ caracter(frayAlejandro,idiota).
 !start.
 
 /* Plans */
-
 +!start : true 
 	<- .print("Mmmmm... qué hambre.").
 

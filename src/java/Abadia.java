@@ -14,18 +14,48 @@ public class Abadia extends Environment {
 	
 	@Override
 	public void init(String[] args) {
-		
-		model = new AbadiaModel();
-		
 		System.out.println("Start Jason Connection...");
 		new Thread( Connection.getInstance(), "connection" ).start();
 		
-		/*addPercept(Literal.parseLiteral("dia(lunes)"));
-		addPercept(Literal.parseLiteral("mes(febrero)"));
-		addPercept(Literal.parseLiteral("anyo(1987)"));
-		addPercept(Literal.parseLiteral("clima(soleado)"));*/
+		model = new AbadiaModel();
 
-		//System.out.println(consultPercepts("adso"));
+
+		// MIERDA
+		/*
+
+		updatePercepts();
+			addPercept(Literal.parseLiteral("dia(lunes)"));
+			addPercept(Literal.parseLiteral("mes(febrero)"));
+			addPercept(Literal.parseLiteral("anyo(1987)"));
+			addPercept(Literal.parseLiteral("clima(soleado)"));
+
+			System.out.println(consultPercepts("frayFernando"));
+			System.out.println(consultPercepts("frayHector"));
+			System.out.println(consultPercepts("frayAlejandro"));
+
+
+		for (Literal l : consultPercepts("frayFernando")){
+			if (l.getFunctor().equalsIgnoreCase("ropa"))
+				System.out.println(l.getTerms());
+		}
+		
+		removePercept("frayFernando", Literal.parseLiteral("ropa(tunica)"));
+		addPercept("frayFernando", Literal.parseLiteral("ropa(tunica,sombrero,bufanda)"));
+
+		System.out.println(consultPercepts("frayFernando"));
+*/
+// HASTA AQUI
+		//String tomaco = "{\"name\":\"move\",\"parameters\":{\"entity\":9842,\"cell\":10116}}";
+		//Connection.getInstance().enviarComandoJSON(tomaco);
+	}
+	
+
+	public void updatePercepts(){
+		clearPercepts("frayFernando");
+		clearPercepts("frayHector");
+		clearPercepts("frayAlejandro");
+		
+		addPercept("frayFernando", Literal.parseLiteral("ropa(tunica)"));
 	}
 	
 	@Override
