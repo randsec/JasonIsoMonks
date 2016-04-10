@@ -25,8 +25,8 @@ public class Server extends Thread{
 				}
 				
 				//sendData = capitalizedSentence.getBytes(); //mayus
-				byte[] sentence_polas = sentence.getBytes();
-				DatagramPacket sendPacket = new DatagramPacket(sentence_polas, sentence_polas.length, IPAddress, dc.enterPort);
+				byte[] datosRecibidos = sentence.getBytes();
+				DatagramPacket sendPacket = new DatagramPacket(datosRecibidos, datosRecibidos.length, IPAddress, dc.enterPort);
 				serverSocket.send(sendPacket);
 				if (sentence.equals("exit")) {
 					serverSocket.close(); 
