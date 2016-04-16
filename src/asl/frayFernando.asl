@@ -14,6 +14,9 @@ caracter(frayAlejandro,idiota).
 +saludo[source(A)] 
   <- .print("He sido saludado por ",A).
 
++recibircosa(X) 
+  <- .print("He recibido ",X).
+
 +comer[source(A)]
 	: caracter(A,Y)
 	<-	.wait(2000); 

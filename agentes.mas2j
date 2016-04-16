@@ -2,7 +2,7 @@ MAS agentes {
 
 	infrastructure: Centralised
 	
-	environment: Abadia("") //sin parametros
+	environment: mainPackage.Abadia //sin parametros
 	
 	agents:
 	  frayAlejandro;

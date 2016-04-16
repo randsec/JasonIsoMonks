@@ -1,9 +1,6 @@
 package conexion;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-public abstract class Connection extends Thread{
+public abstract class Connection{
 	
 	private static Connection instance;
 		
@@ -14,13 +11,8 @@ public abstract class Connection extends Thread{
     	return instance; 
     }
 		
-    public abstract void run();
-    
-    public abstract HashMap<String, Integer> getEntities();
-    public abstract HashMap<String, Integer> getDecorations();
-    public abstract HashMap<Integer, String> getCells();
-    
-    public abstract boolean sendCommand(String command);
-
+	public abstract String receive() ;
+	public abstract void send(String sentSentence);
+        
     
 }
