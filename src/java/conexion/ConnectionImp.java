@@ -132,7 +132,8 @@ public class ConnectionImp extends Connection {
 				if (this.registerEntity(json.getJSONObject("parameters"))) {					
 					JSONObject parametersJSON = json.getJSONObject("parameters");
 					int entity = parametersJSON.getInt("entity");
-					int celda = 9548; // Esta es la celda del tomate (se debe sacar cuando se registre)
+					
+					int celda = 9526; // Esta es la celda del tomate (se debe sacar cuando se registre)
 					//int celda = this.getRandomCellPosition();
 					
 					result = "{\"name\":\"move\",\"parameters\":{\"entity\":" + entity + ",\"cell\":" + celda + "}}";
