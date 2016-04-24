@@ -11,8 +11,13 @@ caracter(frayAlejandro,idiota).
 +!start : true 
 	<- .print("Mmmmm... qué hambre.").
 
+
 +saludo[source(A)] 
   <- .print("He sido saludado por ",A).
+
++sonar(campana)
+<- .print("AMOALLA");
+	tocar(campana).
 
 +recibircosa(X) 
   <- .print("He recibido ",X).

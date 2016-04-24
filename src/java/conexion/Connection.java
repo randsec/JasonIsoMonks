@@ -13,6 +13,6 @@ public abstract class Connection{
 		
 	public abstract String receive() ;
 	public abstract void send(String sentSentence);
-        
-    
+ 
+	public abstract ConnectionProperties getCp();    
 }

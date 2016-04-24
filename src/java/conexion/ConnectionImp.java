@@ -1,41 +1,21 @@
 package conexion;
 
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.json.JSONObject;
 
-import mainPackage.*;
+import mainPackage.AbadiaModel;
 
 public class ConnectionImp extends Connection {
 	
 	private ConnectionProperties cp;
-	private DatagramSocket serverSocket;
- 
+	
 	public ConnectionImp(){
     	this.cp = new ConnectionProperties();
-    	try {
-			this.serverSocket = new DatagramSocket(this.cp.getExitPort());
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
-		
-	/**
-    public void run() {
-    	int valor = 0;
-    	switch(valor) {
-    		case 0: this.receiveAndSend(); break;
-    		case 1: this.send(""); break;
-    		default: break;
-    	}
-    }
-    */
 	
 	/**
 	@SuppressWarnings("resource")
@@ -106,20 +86,19 @@ public class ConnectionImp extends Connection {
 			InetAddress addr = InetAddress.getByName(this.cp.getAddress());
 			DatagramPacket sendPacket = new DatagramPacket(sentSentence_bytes, sentSentence_bytes.length, addr, this.cp.getEnterPort());
 			
-			this.serverSocket.send(sendPacket);
+			this.cp.getServerSocket().send(sendPacket);
 		} catch (Exception e) {
     		System.out.println("Error Server: " + e.getMessage());
     	}
 	}
 	
-	@SuppressWarnings({ "resource"})
 	public String receive() {
 	    String result = "";
 	    try {
 	    	byte[] receiveData = new byte[1024];
 
 	        DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-	        this.serverSocket.receive(receivePacket); //en espera hasta recibir datos
+	        this.cp.getServerSocket().receive(receivePacket); //en espera hasta recibir datos
 	        String receivedSentence = new String(receivePacket.getData());
 	        receivedSentence = receivedSentence.substring(0, receivePacket.getLength());
 	        
@@ -132,5 +111,7 @@ public class ConnectionImp extends Connection {
 	    return result;
 	  }
 
-	
+	public ConnectionProperties getCp() {
+		return cp;
+	}
 }

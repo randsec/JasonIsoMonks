@@ -6,6 +6,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import conexion.Connection;
+import jason.asSyntax.Literal;
+import jason.asSyntax.Structure;
 
 public class AbadiaModelImp extends AbadiaModel{   
 
@@ -65,9 +67,18 @@ public class AbadiaModelImp extends AbadiaModel{
 
    public boolean llamar_misa(){
 	   System.out.println("LLAMADA A TODOS LOS MONJES A MISA");
+	   moveAgentToDecoration("frayAlejandro", "fAlocation");
+	   moveAgentToDecoration("frayHector", "fHlocation");
 	   return true;
    }
-	
+   public boolean tocar_campana(){
+	   System.out.println("CAMPANAAAAAAAAAAAA");
+	   
+	   moveAgentToDecoration("frayAlejandro", "fAlocation");
+	   moveAgentToDecoration("frayHector", "fHlocation");
+	   return true;
+   }
+
    public boolean hablar(String ag1, String ag2, String mensaje){
 	   System.out.println(ag1 + " a " + ag2 +": " + mensaje);
 	   return true;
@@ -84,7 +95,6 @@ public class AbadiaModelImp extends AbadiaModel{
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	public String recieveDataFromConnection(String data){
 		String result = data;
 		JSONObject json = new JSONObject(data);
@@ -93,18 +103,21 @@ public class AbadiaModelImp extends AbadiaModel{
 			case "environment":
 				this.registerEnvironment(json.getJSONObject("parameters"));
 			break;
+			case "event":
+				//{"name":"event","parameters":{"eventName":"tocar_campana"}}
+				this.parseEvent(json.getJSONObject("parameters"));
+			break;
 			default: break;
 		}
 		return result;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	private void registerEnvironment(JSONObject json){
 		this.registerEntities(json.getJSONArray("entities"));
 		this.registerDecorations(json.getJSONArray("decorations"));
 		
-		System.out.println(this.entities.toString());
-		System.out.println(this.decorations.toString());
-
 		this.loadedEnvironment = true;
+		System.out.println("Entorno cargado");
 	}
 	
 	private void registerEntities(JSONArray ents){
@@ -142,7 +155,25 @@ public class AbadiaModelImp extends AbadiaModel{
 		}		
 		this.decorations = hmTemp;
 	}
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	private void parseEvent(JSONObject json){
+		String eventName = json.getString("eventName");
+		
+		System.out.println("EJECUTANDO EVENTO");
+		switch (eventName){
+			case "tocar_campana":
+				Abadia.instance.addPercept("frayFernando", "sonar(campana)");
+			break;
 	
+			case "llamar_misa":
+				Abadia.instance.addPercept("frayFernando", "llamar(misa)");
+			break;
+		}
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	public boolean isEnvironmentLoaded(){
 		return this.loadedEnvironment;
 	}

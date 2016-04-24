@@ -15,7 +15,8 @@ public abstract class AbadiaModel {
 	public abstract boolean isValidJSON(String test); 
 	public abstract boolean llamar_comida();
 	public abstract boolean llamar_misa();
-	public abstract boolean hablar(String ag1, String ag2, String mensaje);
+	public abstract boolean tocar_campana();
+public abstract boolean hablar(String ag1, String ag2, String mensaje);
 	public abstract void moveAgentToDecoration(String agName, String decName);
 	
 	public abstract String recieveDataFromConnection(String data);
