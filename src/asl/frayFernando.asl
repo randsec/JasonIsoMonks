@@ -1,41 +1,46 @@
 /* Initial beliefs and rules */
 /* Conocimientos que el frayFernando tiene del entorno */
-caracter(frayHector,simpatico).
-caracter(frayAlejandro,idiota).
+//caracter(frayHector,simpatico).
+//caracter(frayAlejandro,idiota).
+ganas_tocar(campana, muchas).
 
 /* Initial goals */
-!comer.
-!start.
+//!comer.
+//!start.
 
 /* Plans */
-+!start : true 
-	<- .print("Mmmmm... qué hambre.").
+//+!start : true 
+//	<- .print("Mmmmm... qué hambre.").
 
 
-+saludo[source(A)] 
-  <- .print("He sido saludado por ",A).
+//+saludo[source(A)] 
+//  <- .print("He sido saludado por ",A).
 
-+sonar(campana)
-<- .print("AMOALLA");
-	tocar(campana).
-
-+recibircosa(X) 
-  <- .print("He recibido ",X).
-
-+comer[source(A)]
-	: caracter(A,Y)
-	<-	.wait(2000); 
-		.print("(El monje ", A, " me ha invitado a comer... es ", Y, ")");
-		.send(frayFernando,tell,decidirComer(A,Y)).
++quiero_tocar(campana) : ganas_tocar(campana, ninguna)
+	<- .print("Eh, una campana!, pero no tengo ganas de tocarla...").
 		
-+decidirComer(A,Y)
-	: Y == simpatico
-	<- 	.print("Vale").		
++quiero_tocar(campana) : not ganas_tocar_campana(campana, ninguna)
+	<- 	.print("Eh, una campana!, voy a tocarla...");
+		toco(campana).
 
-+decidirComer(A,Y)
-	: Y == idiota
-	<- .print("No, gracias, iré más tarde.").
+//+recibircosa(X) 
+//  <- .print("He recibido ",X).
+
+//+comer[source(A)]
+//	: caracter(A,Y)
+//	<-	.wait(2000); 
+//		.print("(El monje ", A, " me ha invitado a comer... es ", Y, ")");
+//		.send(frayFernando,tell,decidirComer(A,Y)).
+		
+//+decidirComer(A,Y)
+//	: Y == simpatico
+//	<- 	.print("Vale").		
+
+//+decidirComer(A,Y)
+//	: Y == idiota
+//	<- .print("No, gracias, iré más tarde.").
 	
-+interactuar(PERSONA,ACCION)
-	<- 	.print("Interactuar con ", PERSONA, " con la accion ", ACCION);
-		.send(PERSONA,tell,ACCION).
+//+interactuar(PERSONA,ACCION)
+//	<- 	.print("Interactuar con ", PERSONA, " con la accion ", ACCION);
+//		.send(PERSONA,tell,ACCION).
+		

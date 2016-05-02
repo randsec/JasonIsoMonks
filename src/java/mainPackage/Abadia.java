@@ -6,20 +6,18 @@ import jason.environment.Environment;
 
 public class Abadia extends Environment {
 	
-	// any class members needed...
-	public static final Literal tocar_campana = Literal.parseLiteral("tocar(campana)");
-	public static final Literal llamar_misa = Literal.parseLiteral("llamar(misa)");
-	public static final Literal llamar_comida = Literal.parseLiteral("llamar(comida)");
-	public static final Literal hablar = Literal.parseLiteral("hablar(agente,mensaje)");
+	private static Abadia instance;
 	
-	public static Abadia instance;
-	
-	
-	
-	@Override
-	public void init(String[] args) {
-		System.out.println("Start Jason Connection...");
+	public Abadia() {
 		instance = this;
+	}
+	
+	public static Abadia getInstance() {
+		return instance;
+	}
+	
+	public void init(String[] args) {
+		System.out.println("Jason BDI ready...");
 		new Thread(new ConnectionListener(), "connectionListener" ).start();
 		
 		while(!AbadiaModel.getInstance().isEnvironmentLoaded()){
@@ -29,55 +27,26 @@ public class Abadia extends Environment {
 				e.printStackTrace();
 			}
 		}
-		//String firstCommand = Connection.getInstance().receive();
-		//AbadiaModel.getInstance().recieveDataFromConnection(firstCommand);
-		
-		//AbadiaModel.getInstance().moveAgentToDecoration("frayFernando","antorchaNorte");		
-		//AbadiaModel.getInstance().moveAgentToDecoration("frayHector","antorchaOeste");
-		//AbadiaModel.getInstance().moveAgentToDecoration("frayAlejandro","antorchaSur");
-		
-		this.updatePercepts();
-	}
-
-	public void updatePercepts(){
-		clearPercepts("frayFernando");
-		clearPercepts("frayHector");
-		clearPercepts("frayAlejandro");
-				
-		addPercept("frayFernando",Literal.parseLiteral("recibircosa(cuchara)"));
-		addPercept("frayFernando",Literal.parseLiteral("recibircosa(mazorca)"));
-		addPercept("frayFernando",Literal.parseLiteral("recibircosa(extintor)"));
 	}
 	
-	@Override
-	public void stop() {
-		// anything else to be done by the environment when
-		// the system is stopped...
-		AbadiaModel.getInstance().getThreadByName("connectionListener").interrupt();
-	}
-	
-	@Override
 	public boolean executeAction(String agente, Structure accion) {
-		
-		System.out.println("Agente [" + agente + "] ejecutando accion: " + accion.toString());
-
+		AbadiaModel.getInstance().setAgent(agente);
 		boolean success = false;
 		
-		if(accion.equals(llamar_comida)){
-			success = AbadiaModel.getInstance().llamar_comida();
+		switch (accion.getFunctor()) {
+			case "toco":
+				String object = accion.getTerm(0).toString();
+				success = AbadiaModel.getInstance().tocar(object);
+				break;
+			case "voy_a":
+				String location = accion.getTerm(0).toString();
+				success = AbadiaModel.getInstance().ir_a(location);
+				break;
+			default:
+				System.out.println("Accion desconocida: " + accion.getFunctor());
+				break;
 		}
-		else if(accion.equals(llamar_misa)){
-			success = AbadiaModel.getInstance().llamar_misa();
-		}
-		else if(accion.equals(tocar_campana)){
-			success = AbadiaModel.getInstance().tocar_campana();
-		}
-		else if(accion.getFunctor().equals("hablar")){
-			String interlocutor = accion.getTerm(0).toString();
-			String mensaje = accion.getTerm(1).toString();
-			
-			success = AbadiaModel.getInstance().hablar(agente, interlocutor, mensaje);
-		}
+		
 		return success;
 	}
 

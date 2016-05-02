@@ -80,12 +80,11 @@ public class ConnectionImp extends Connection {
 	
 	
 	public void send(String sentSentence) {
-		show("<<", sentSentence);
+		//this.show("<<", sentSentence);
 		try {							
 			byte[] sentSentence_bytes = sentSentence.getBytes();
 			InetAddress addr = InetAddress.getByName(this.cp.getAddress());
 			DatagramPacket sendPacket = new DatagramPacket(sentSentence_bytes, sentSentence_bytes.length, addr, this.cp.getEnterPort());
-			
 			this.cp.getServerSocket().send(sendPacket);
 		} catch (Exception e) {
     		System.out.println("Error Server: " + e.getMessage());

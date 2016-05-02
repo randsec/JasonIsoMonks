@@ -10,20 +10,18 @@ public abstract class AbadiaModel {
     	}
     	return instance; 
     }
-
-    public abstract Thread getThreadByName(String id);
-	public abstract boolean isValidJSON(String test); 
-	public abstract boolean llamar_comida();
-	public abstract boolean llamar_misa();
-	public abstract boolean tocar_campana();
-public abstract boolean hablar(String ag1, String ag2, String mensaje);
-	public abstract void moveAgentToDecoration(String agName, String decName);
-	
-	public abstract String recieveDataFromConnection(String data);
-	public abstract HashMap<String, HashMap<String,String>> getEntities();
+    
+    //Getters & Setters
+    public abstract void setAgent(String agente);
+    public abstract HashMap<String, HashMap<String,String>> getEntities();
 	public abstract HashMap<String, HashMap<String,String>> getDecorations();
-
 	public abstract boolean isEnvironmentLoaded();
-
+       
+	//Acciones de los agentes o del entorno
+	public abstract boolean tocar(String object);
+	public abstract boolean ir_a(String location);
+	
+	//Receive Data
+	public abstract String recieveDataFromConnection(String data);
 }
 

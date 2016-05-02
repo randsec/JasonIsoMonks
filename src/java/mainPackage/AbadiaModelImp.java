@@ -1,89 +1,30 @@
 package mainPackage;
+
 import java.util.HashMap;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import conexion.Connection;
-import jason.asSyntax.Literal;
-import jason.asSyntax.Structure;
 
 public class AbadiaModelImp extends AbadiaModel{   
-
+	
+	private String Agent;
 	private HashMap<String, HashMap<String,String>> entities;
 	private HashMap<String, HashMap<String,String>> decorations;
-
 	private boolean loadedEnvironment;
-		
-	private int hour;
-	private int minutes;
-	private String weather;
+	private int cellEvent;
 
-   public AbadiaModelImp() {
-	   this.entities = new HashMap<String, HashMap<String,String>>();
-	   this.decorations = new HashMap<String, HashMap<String,String>>();
-	   
-	   this.hour = 07;
-	   this.minutes = 00;
-	   this.weather = "shiny";
-	   
-	   this.loadedEnvironment = false;
-   }
-      
-   
-   public Thread getThreadByName(String id){
-	   for (Thread t : Thread.getAllStackTraces().keySet()){ 
-		   if (t.getName() == id){
-		   		return t;
-		   }
-	   }
-	   return null;
-   }
-   
-   public boolean isValidJSON(String test) {
-	    try {
-	        new JSONObject(test);
-	    } catch (JSONException ex) {
-	        // edited, to include @Arthur's comment
-	        // e.g. in case JSONArray is valid as well...
-	        try {
-	            new JSONArray(test);
-	        } catch (JSONException ex1) {
-	            return false;
-	        }
-	    }
-	    return true;
+	public AbadiaModelImp() {
+		this.Agent = "";
+		this.entities = new HashMap<String, HashMap<String,String>>();
+		this.decorations = new HashMap<String, HashMap<String,String>>();			   
+		this.loadedEnvironment = false;
+		this.cellEvent = -1;
 	}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   
-   public boolean llamar_comida(){
-	   System.out.println("LLAMADA A TODOS LOS MONJES A COMER");
-	   return true;
-   }
-
-   public boolean llamar_misa(){
-	   System.out.println("LLAMADA A TODOS LOS MONJES A MISA");
-	   moveAgentToDecoration("frayAlejandro", "fAlocation");
-	   moveAgentToDecoration("frayHector", "fHlocation");
-	   return true;
-   }
-   public boolean tocar_campana(){
-	   System.out.println("CAMPANAAAAAAAAAAAA");
-	   
-	   moveAgentToDecoration("frayAlejandro", "fAlocation");
-	   moveAgentToDecoration("frayHector", "fHlocation");
-	   return true;
-   }
-
-   public boolean hablar(String ag1, String ag2, String mensaje){
-	   System.out.println(ag1 + " a " + ag2 +": " + mensaje);
-	   return true;
-   }
-   
+	
+	public void setAgent(String agente) {
+		this.Agent = agente;
+	}
+	
    	public HashMap<String, HashMap<String,String>> getEntities() {
 		return this.entities;
 	}
@@ -91,27 +32,59 @@ public class AbadiaModelImp extends AbadiaModel{
 	public HashMap<String, HashMap<String,String>> getDecorations() {
 		return this.decorations;
 	}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public boolean isEnvironmentLoaded(){
+		return this.loadedEnvironment;
+	}
+	
+	public boolean tocar(String object){
+		switch (object) {
+		case "campana":
+			this.sendActionToUnity("suena_campana");
+			String accion = "quiero_ir_a_rezar";
+			Abadia.getInstance().addPercept("frayAlejandro", accion);
+			Abadia.getInstance().addPercept("frayHector", accion);
+			break;
+		default: 
+			System.out.println("tocar ¿" + object + "?");
+			break;
+	}
+		return true;
+	}
+   
+	public boolean ir_a(String location) {
+		this.moveAgentToDecoration(this.Agent, location);
+		return true;
+	}
+   
 	public String recieveDataFromConnection(String data){
 		String result = data;
 		JSONObject json = new JSONObject(data);
 		String name = json.getString("name");
+		JSONObject parameters = json.getJSONObject("parameters");
 		switch(name) {
 			case "environment":
-				this.registerEnvironment(json.getJSONObject("parameters"));
-			break;
+				this.registerEnvironment(parameters);
+				break;
 			case "event":
-				//{"name":"event","parameters":{"eventName":"tocar_campana"}}
-				this.parseEvent(json.getJSONObject("parameters"));
-			break;
+				//{"name":"event","parameters":{"eventName":"campana_cerca"}}
+				this.cellEvent = parameters.getInt("cell");
+				this.parseEvent(parameters);
+				break;
 			default: break;
 		}
 		return result;
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private void parseEvent(JSONObject json){
+		String eventName = json.getString("eventName");
+		switch (eventName){
+			case "campana_cerca":
+				Abadia.getInstance().addPercept("frayFernando", "quiero_tocar(campana)");
+				break;
+		}
+	}
+   
 	private void registerEnvironment(JSONObject json){
 		this.registerEntities(json.getJSONArray("entities"));
 		this.registerDecorations(json.getJSONArray("decorations"));
@@ -155,27 +128,18 @@ public class AbadiaModelImp extends AbadiaModel{
 		}		
 		this.decorations = hmTemp;
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	private void parseEvent(JSONObject json){
-		String eventName = json.getString("eventName");
-		
-		System.out.println("EJECUTANDO EVENTO");
-		switch (eventName){
-			case "tocar_campana":
-				Abadia.instance.addPercept("frayFernando", "sonar(campana)");
-			break;
 	
-			case "llamar_misa":
-				Abadia.instance.addPercept("frayFernando", "llamar(misa)");
-			break;
-		}
+	private void sendActionToUnity(String actionName) {
+		String sentSentence = "{\"name\":\"action\",\"parameters\":{\"cell\":" + this.cellEvent + ",\"actionName\":\""+actionName+"\"}}";
+		Connection.getInstance().send(sentSentence);
 	}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	public boolean isEnvironmentLoaded(){
-		return this.loadedEnvironment;
+	
+	private void moveAgentToDecoration(String agName, String decName) {
+		int agentID = Integer.parseInt(AbadiaModel.getInstance().getEntities().get(agName).get("id"));
+		int destino = Integer.parseInt(AbadiaModel.getInstance().getDecorations().get(decName).get("cell"));
+		String sentSentence = "{\"name\":\"move\",\"parameters\":{\"entity\":"+agentID+",\"cell\":"+destino+"}}";
+		Connection.getInstance().send(sentSentence);
+		this.updateAgentPosition(agName, destino);
 	}
 	
 	private void updateAgentPosition(String agName, int cell){
@@ -184,16 +148,4 @@ public class AbadiaModelImp extends AbadiaModel{
 		this.entities.put(agName, atrs);
 	}
 	
-	@Override
-	public void moveAgentToDecoration(String agName, String decName) {
-		int agentID = Integer.parseInt(AbadiaModel.getInstance().getEntities().get(agName).get("id"));
-		int destino = Integer.parseInt(AbadiaModel.getInstance().getDecorations().get(decName).get("cell"));
-		
-		String sentSentence = "{\"name\":\"move\",\"parameters\":{\"entity\":"+agentID+",\"cell\":"+destino+"}}";
-		
-		Connection.getInstance().send(sentSentence);
-		
-		this.updateAgentPosition(agName, destino);
-	}
-
 }

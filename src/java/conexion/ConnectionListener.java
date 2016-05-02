@@ -21,6 +21,7 @@ public class ConnectionListener extends Thread{
 	 * @param direction
 	 * @param data
 	 */
+	@SuppressWarnings("unused")
 	private void show(String direction, String data) {
 		if (!data.isEmpty()) {
 			//System.out.println(data);
@@ -38,8 +39,7 @@ public class ConnectionListener extends Thread{
 	}
 
     
-	public String receive() {
-	    String result = "";
+	public void receive() {
 	    try {
 	    	while(true){		    	
 		    	byte[] receiveData = new byte[1024];
@@ -49,16 +49,13 @@ public class ConnectionListener extends Thread{
 		        String receivedSentence = new String(receivePacket.getData());
 		        receivedSentence = receivedSentence.substring(0, receivePacket.getLength());
 		        
-		        this.show(">>", receivedSentence); // solo vale para mostrar la info
-		        result = receivedSentence;
-		        
-		        AbadiaModel.getInstance().recieveDataFromConnection(result);
+		        //this.show(">>", receivedSentence); // solo vale para mostrar la info
+		        AbadiaModel.getInstance().recieveDataFromConnection(receivedSentence);
 	    	}
 	      } catch (Exception e) {
 	        System.out.println("Error Server: " + e.getMessage());
 	      }
 	    
-	    return result;
 	  }
 
 
