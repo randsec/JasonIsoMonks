@@ -12,9 +12,8 @@ ganas_tocar(campana, muchas).
 //+!start : true 
 //	<- .print("Mmmmm... qué hambre.").
 
-
-//+saludo[source(A)] 
-//  <- .print("He sido saludado por ",A).
++hello[source(A)] : .my_name(Me)
+        <- .send(A, tell, hello_from(Me)).
 
 +quiero_tocar(campana) : ganas_tocar(campana, ninguna)
 	<- .print("Eh, una campana!, pero no tengo ganas de tocarla...").

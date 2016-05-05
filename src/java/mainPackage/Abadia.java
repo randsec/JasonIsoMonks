@@ -1,8 +1,10 @@
 package mainPackage;
+
 import conexion.ConnectionListener;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Structure;
 import jason.environment.Environment;
+import jason.runtime.RuntimeServicesInfraTier;
 
 public class Abadia extends Environment {
 	
@@ -29,7 +31,26 @@ public class Abadia extends Environment {
 		}
 	}
 	
+	/** Called before the end of MAS execution **/
+	@Override
+	public void stop() {
+		super.stop();
+	}
+	
+	private void generateGhost() {		
+		System.out.println(" === Agente Fantasma === ");
+		RuntimeServicesInfraTier rsit = getEnvironmentInfraTier().getRuntimeServices();
+		try {
+			rsit.createAgent("frayAlejandro", "src/asl/frayAlejandro.asl", null, null, null, null);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println(" ====================== ");
+	}
+	
 	public boolean executeAction(String agente, Structure accion) {
+		this.generateGhost();
 		AbadiaModel.getInstance().setAgent(agente);
 		boolean success = false;
 		
@@ -53,4 +74,5 @@ public class Abadia extends Environment {
 	public void addPercept(String ag, String percept) {
 		addPercept(ag,Literal.parseLiteral(percept));
 	}
+	
 }
