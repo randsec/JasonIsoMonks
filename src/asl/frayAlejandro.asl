@@ -1,20 +1,20 @@
 /* Initial beliefs and rules */
 /* Conocimientos que el frayAlejandro tiene del entorno */
-//ganas_rezar(ninguna).
+ganas_rezar(ninguna).
 
 /* Initial goals */
 //!invitarA.
-!go.
+//!go.
 
 /*Plans */
 //+ir(location)
 //<- yendo(location).
 
-+!go : true
-	<- .broadcast(tell,hello).
+//+!go : true
+//	<- .broadcast(tell,hello).
 	
-+hello_from(Agent) : true
-	<- .println("Yay! Heard from: ", Agent).
+//+hello_from(Agent) : true
+//	<- .println("Yay! Heard from: ", Agent).
 
 +quiero_ir_a_rezar : ganas_rezar(ninguna)
 	<- .print("No tengo ganas de ir a rezar").

@@ -1,6 +1,9 @@
 package mainPackage;
 
 import conexion.ConnectionListener;
+import debug.*;
+import jason.architecture.AgArch;
+import jason.asSemantics.Agent;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Structure;
 import jason.environment.Environment;
@@ -9,9 +12,11 @@ import jason.runtime.RuntimeServicesInfraTier;
 public class Abadia extends Environment {
 	
 	private static Abadia instance;
+	private Thread thread;
 	
 	public Abadia() {
 		instance = this;
+		this.thread = null;
 	}
 	
 	public static Abadia getInstance() {
@@ -20,13 +25,21 @@ public class Abadia extends Environment {
 	
 	public void init(String[] args) {
 		System.out.println("Jason BDI ready...");
-		new Thread(new ConnectionListener(), "connectionListener" ).start();
-		
-		while(!AbadiaModel.getInstance().isEnvironmentLoaded()){
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		this.generateGhost();
+		this.threadSocketConnection(false);
+	}
+	
+	private void threadSocketConnection(boolean run) {
+		if (run) {
+			this.thread = new Thread(new ConnectionListener(), "connectionListener" );
+			this.thread.start();
+			
+			while(!AbadiaModel.getInstance().isEnvironmentLoaded()){
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -34,23 +47,30 @@ public class Abadia extends Environment {
 	/** Called before the end of MAS execution **/
 	@Override
 	public void stop() {
+		this.thread.interrupt();
 		super.stop();
 	}
 	
-	private void generateGhost() {		
+	private void generateGhost() {
 		System.out.println(" === Agente Fantasma === ");
 		RuntimeServicesInfraTier rsit = getEnvironmentInfraTier().getRuntimeServices();
 		try {
-			rsit.createAgent("frayAlejandro", "src/asl/frayAlejandro.asl", null, null, null, null);
+			System.out.println("Numero de Agentes en el Environment: " + rsit.getAgentsNames());
+			Agent ag = new Agent();
+			ag.initAg("src/asl/frayAlejandro.asl");
+			ag.initDefaultFunctions();
+			AgentDebug ad = new AgentDebug(ag);
+			ad.showAgentInfo();
+			AgArch aga = rsit.clone(ag, null, "frayAlejandro");
+			System.out.println("Creado Agente " + aga.getAgName() + " con exito");
+			System.out.println("Numero de Agentes en el Environment: " + rsit.getAgentsNames());
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			//e1.printStackTrace();
 		}
 		System.out.println(" ====================== ");
 	}
 	
 	public boolean executeAction(String agente, Structure accion) {
-		this.generateGhost();
 		AbadiaModel.getInstance().setAgent(agente);
 		boolean success = false;
 		
