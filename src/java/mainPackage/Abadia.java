@@ -14,8 +14,6 @@ public class Abadia extends Environment {
 	
 	public static Abadia instance;
 	
-	
-	
 	@Override
 	public void init(String[] args) {
 		System.out.println("Start Jason Connection...");

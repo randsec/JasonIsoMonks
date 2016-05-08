@@ -6,9 +6,10 @@
 
 /*Plans */
 +!invitarA
-	<- 	.wait(5000); //5 segundos
-		.print("Hola, frayFernando, ¿Vienes a comer conmigo?");
-		.send(frayFernando,tell,comer).
+	<- 	mover_a(frayHector);
+		.wait(5000); //5 segundos
+		.print("Hola, frayHector, ¿Vienes a comer conmigo?").
+		/**  .send(frayFernando,tell,comer).*/
 
 +saludo[source(A)] 
   <- .print("He sido saludado por ",A).
