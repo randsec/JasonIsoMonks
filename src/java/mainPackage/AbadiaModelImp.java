@@ -41,9 +41,8 @@ public class AbadiaModelImp extends AbadiaModel{
 		switch (object) {
 		case "campana":
 			this.sendActionToUnity("suena_campana");
-			String accion = "quiero_ir_a_rezar";
-			Abadia.getInstance().addPercept("frayAlejandro", accion);
-			Abadia.getInstance().addPercept("frayHector", accion);
+			Abadia.getInstance().addPercept("frayAlejandro", "quiero_ir(capilla)");
+			Abadia.getInstance().addPercept("frayHector", "quiero_ir(capilla)");
 			break;
 		default: 
 			System.out.println("tocar ¿" + object + "?");
@@ -76,30 +75,30 @@ public class AbadiaModelImp extends AbadiaModel{
 	}
 	
 	private void parseEvent(JSONObject json){
-		//{"name":"event","parameters":{"eventName":"campana_cerca"}}
+		//{"name":"event","parameters":{"eventName":"campana_cerca","who":"frayFernando"}}
 		String eventName = json.getString("eventName");
+		String who = json.getString("who");
 		switch (eventName){
 			case "campana_cerca":
 				Abadia.getInstance().addPercept("frayFernando", "quiero_tocar(campana)");
 				break;
 			case "entrar_comedor":
-				String accion = "quiero_ir(comedor)";
-				Abadia.getInstance().addPercept("frayAlejandro", accion);
-				Abadia.getInstance().addPercept("frayHector", accion);
+				Abadia.getInstance().addPercept("frayAlejandro", "quiero_ir(comedor)[source(" + who + ")]");
+				Abadia.getInstance().addPercept("frayHector", "quiero_ir(comedor)[source(" + who + ")]");
 				break;
 			case "hora_trabajar":
-				Abadia.getInstance().addPercept("frayAlejandro", "quiero_ir(taller)");
-				Abadia.getInstance().addPercept("frayHector", "quiero_ir(cocina)");
+				Abadia.getInstance().addPercept("frayAlejandro", "quiero_ir(taller)[source(" + who + ")]");
+				Abadia.getInstance().addPercept("frayHector", "quiero_ir(cocina)[source(" + who + ")]");
 				break;
+			//default: System.out.println("Evento: ¿" + eventName + "?");
 		}
 	}
    
 	private void registerEnvironment(JSONObject json){
 		this.registerEntities(json.getJSONArray("entities"));
 		this.registerDecorations(json.getJSONArray("decorations"));
-		
 		this.loadedEnvironment = true;
-		System.out.println("Entorno cargado");
+		System.out.println("Entorno...OK");
 	}
 	
 	private void registerEntities(JSONArray ents){
