@@ -25,8 +25,8 @@ public class Abadia extends Environment {
 	
 	public void init(String[] args) {
 		System.out.println("Jason BDI ready...");
-		this.generateGhost();
-		this.threadSocketConnection(false);
+		//this.generateGhost();
+		this.threadSocketConnection(true);
 	}
 	
 	private void threadSocketConnection(boolean run) {

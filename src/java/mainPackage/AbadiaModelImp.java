@@ -67,7 +67,6 @@ public class AbadiaModelImp extends AbadiaModel{
 				this.registerEnvironment(parameters);
 				break;
 			case "event":
-				//{"name":"event","parameters":{"eventName":"campana_cerca"}}
 				this.cellEvent = parameters.getInt("cell");
 				this.parseEvent(parameters);
 				break;
@@ -77,10 +76,20 @@ public class AbadiaModelImp extends AbadiaModel{
 	}
 	
 	private void parseEvent(JSONObject json){
+		//{"name":"event","parameters":{"eventName":"campana_cerca"}}
 		String eventName = json.getString("eventName");
 		switch (eventName){
 			case "campana_cerca":
 				Abadia.getInstance().addPercept("frayFernando", "quiero_tocar(campana)");
+				break;
+			case "entrar_comedor":
+				String accion = "quiero_ir(comedor)";
+				Abadia.getInstance().addPercept("frayAlejandro", accion);
+				Abadia.getInstance().addPercept("frayHector", accion);
+				break;
+			case "hora_trabajar":
+				Abadia.getInstance().addPercept("frayAlejandro", "quiero_ir(taller)");
+				Abadia.getInstance().addPercept("frayHector", "quiero_ir(cocina)");
 				break;
 		}
 	}
