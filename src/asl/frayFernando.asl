@@ -3,6 +3,7 @@
 //caracter(frayHector,simpatico).
 //caracter(frayAlejandro,idiota).
 ganas_tocar(campana, muchas).
+//ganas_tocar(campana, ninguna).
 
 /* Initial goals */
 //!comer.

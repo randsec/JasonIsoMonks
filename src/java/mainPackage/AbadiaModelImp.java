@@ -1,9 +1,18 @@
 package mainPackage;
 
-import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import conexion.Connection;
+import jason.JasonException;
+import jason.architecture.AgArch;
+import jason.asSemantics.Agent;
+import jason.asSemantics.Intention;
+import jason.asSyntax.Literal;
+import jason.bb.BeliefBase;
+import jason.runtime.RuntimeServicesInfraTier;
+import jason.stdlib.foreach;
+import java.util.*;
+import jason.*;
 
 public class AbadiaModelImp extends AbadiaModel{   
 	
@@ -42,7 +51,114 @@ public class AbadiaModelImp extends AbadiaModel{
 		case "campana":
 			this.sendActionToUnity("suena_campana");
 			String accion = "quiero_ir_a_rezar";
-			Abadia.getInstance().addPercept("frayAlejandro", accion);
+			
+			/*--------------------------------------------*/
+			
+			Agent agentetest = new Agent();		
+			
+			
+			try {
+				
+				agentetest.initAg("src/asl/frayAlejandro.asl");				
+				//agentetest.addBel(Literal.parseLiteral("ganasrezar(muchas)"));
+				
+				
+				
+				
+			/*	RuntimeServicesInfraTier rsit = getEnvironmentInfraTier().getRuntimeServices();
+				System.out.println(rsit.toString());
+				
+				
+				AgArch agar = new AgArch();
+				
+				agentetest.initAg("src/asl/frayAlejandro.asl");											
+				//agar.getTS().getAg().addBel(Literal.parseLiteral("ganasrezar(muchas)"));							
+				
+				System.out.println("BeliefBase de Alejandro: " + agentetest.getBB().toString());
+				
+				
+				agar.setTS(agentetest.getTS());		
+				
+								
+				agar.getTS().getAg().addBel(Literal.parseLiteral("ganasrezar(muchas)"));
+				
+				System.out.println(agar.getAgName());
+				
+				//Literal lit = (Literal) Literal.parseLiteral("ganas_rezar(muchas)");
+				
+				//agentetest.getTS().getAg().addBel(Literal.parseLiteral("ganas_rezar(muchas)"));
+				
+				//agentetest.delBel(Literal.parseLiteral("ganas_rezar(ninguna)"));
+				
+				
+				
+				//agentetest.delBel(Literal.parseLiteral("ganasrezar(ninguna)"));
+				
+				//agentetest.addBel(Literal.parseLiteral("ganasrezar(muchas)"));	
+				
+				
+				System.out.println(">>>>>> SE HA ANYADIDO EL BELIEF");
+				
+				System.out.println("BeliefBase de Alejandro modificada: " + agentetest.getBB().toString());
+				
+				Agent agentetest2 = new Agent();
+				
+				agentetest2.initAg("src/asl/frayAlejandro.asl");
+				System.out.println("BeliefBase de Alejandro reiniciada: " + agentetest.getBB().toString());
+				
+				
+				Intention intention = new Intention();															
+				
+				*/
+				
+				//agentetest2.brf(Literal.parseLiteral("ganas_rezar(muchas)"), Literal.parseLiteral("ganas_rezar(ninguna)"), intention);
+				
+				//System.out.println("-->brf ejecutado");				
+				
+				//agentetest.getBB().clear();
+				
+				
+				
+				//System.out.println("initial bels: " + agentetest.getInitialBels().size());
+				
+				//agentetest.addBel(Literal.parseLiteral("ganas_rezar(muchas)")); HACE LO MISMO QUE LA LINEA DE ABAJO
+				//agentetest.getBB().add(Literal.parseLiteral("ganas_de_comer(muchas)"));			
+				//agentetest.getBB().add(Literal.parseLiteral("ganas_rezar(muchas)"));
+				
+				//agentetest.addInitialBel(Literal.parseLiteral("ganas_rezar(muchas)"));
+				//agentetest.getBB().add(Literal.parseLiteral("ganas_rezar(muchas)"));
+				
+				//agentetest.addInitialBelsInBB();
+				
+				
+				
+				//setBB(BeliefBase bb)
+				//System.out.println("--" + agentetest.getBB());
+				
+				
+				/*for (Literal l  : agentetest.getInitialBels()) {
+					System.out.println("initial belief: " + l);
+					
+				}*/
+				//System.out.println("BB: " + agentetest.getBB().toString());
+				
+				//System.out.println("initial bels: " + agentetest.getInitialBels().size());
+						
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+			/*--------------------------------------------*/
+						
+			
+			Abadia.getInstance().addPercept("frayAlejandro", "rezar_o_no_rezar");			
+			
+			
+			
+			//Abadia.getInstance().addPercept("frayAlejandro", accion);
 			Abadia.getInstance().addPercept("frayHector", accion);
 			break;
 		default: 

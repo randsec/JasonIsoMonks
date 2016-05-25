@@ -7,9 +7,10 @@ import java.util.Arrays;
 
 import org.json.JSONObject;
 
+import jason.architecture.AgArch;
 import mainPackage.AbadiaModel;
 
-public class ConnectionImp extends Connection {
+public class ConnectionImp extends Connection {	
 	
 	private ConnectionProperties cp;
 	
