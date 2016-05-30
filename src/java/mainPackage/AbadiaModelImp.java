@@ -64,6 +64,7 @@ public class AbadiaModelImp extends AbadiaModel{
 		switch(name) {
 			case "environment":
 				this.registerEnvironment(parameters);
+				Abadia.getInstance().addPercept("frayHector", "quiero_ir(capilla)");
 				break;
 			case "event":
 				this.cellEvent = parameters.getInt("cell");
@@ -89,6 +90,9 @@ public class AbadiaModelImp extends AbadiaModel{
 			case "hora_trabajar":
 				Abadia.getInstance().addPercept("frayAlejandro", "quiero_ir(taller)[source(" + who + ")]");
 				Abadia.getInstance().addPercept("frayHector", "quiero_ir(cocina)[source(" + who + ")]");
+				break;
+			case "cerrar_puerta":
+				Abadia.getInstance().addPercept("frayHector", "cerrada(cocina)");
 				break;
 			//default: System.out.println("Evento: ¿" + eventName + "?");
 		}
