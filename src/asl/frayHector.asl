@@ -2,8 +2,12 @@
 /* Conocimientos que el frayHector tiene del entorno */
 ganas_rezar(muchas).
 ganas_ir(comedor, muchas).
+ganas_ir(habitacion, muchas).
 ganas_ir(cocina, muchas).
 habitaciones(cocina, abierta).
+
+objetoManoDerecha(nada).
+objetoManoIzquierda(nada).
 
 /*Initial goals */
 //!invitarA.
@@ -24,14 +28,19 @@ habitaciones(cocina, abierta).
 			-quiero_ir(cocina)[source(self)];
 			+quiero_ir(cocina)[source(self)].
 		
+//#############################################################
+//#############################################################
+//#############################################################
+
+/*
 +quiero_ir(comedor)[source(A)] 
 	: ganas_ir(comedor, ninguna) & not (A == self)
 		<- .print("Creo haber visto a ", A, " entrar en el comedor, bah, serán imaginaciones mias...").
-
+*/
 +quiero_ir(comedor)[source(A)] 
 	: ganas_ir(comedor, ninguna) & (A == self)
 		<- .print("No me apetece ir a comer al comedor.").
-
+/*
 +quiero_ir(comedor)[source(A)] 
 	: not ganas_ir(comedor, ninguna) & not (A == self)
 		<- 	.print("Creo haber visto a ", A, " entrar en el comedor, voy a mirar si hay comida");
@@ -39,36 +48,69 @@ habitaciones(cocina, abierta).
 			.wait(10000); //Tiempo en el comedor (ms)
 			-quiero_ir(capilla)[source(self)];
 			+quiero_ir(capilla)[source(self)].
-
+*/
 +quiero_ir(comedor)[source(A)] 
 	: not ganas_ir(comedor, ninguna) & (A == self)
 		<- 	.print("Ahora voy a ir a comer al comedor.");
 			voy_a(fHlocation_comedor);
 			.wait(10000); //Tiempo en el comedor (ms)
-			-quiero_ir(capilla)[source(self)];
-			+quiero_ir(capilla)[source(self)].
+			-quiero_ir(habitacion)[source(self)];
+			+quiero_ir(habitacion)[source(self)].
 		
+//#############################################################
+//#############################################################
+//#############################################################
+
 +quiero_ir(cocina)[source(A)]
 	: ganas_ir(cocina, ninguna) & (A == self)
-		<-	.print("Ahora que he terminado de rezar no me apetece hacer nada, me quedare aqui durmiendo").
+		<-	.print("Ahora no me apetece hacer nada, me quedaré aquí de momento").
 
 +quiero_ir(cocina)[source(A)]
 	: not ganas_ir(cocina, ninguna) & (A == self) & habitaciones(cocina, abierta)
-		<-	.print("Y despues de un rezo rapido, voy a ir a la cocina a trabajar un poco");
+		<-	.print("Voy a ir a la cocina a trabajar un poco");
 			voy_a(fHlocation_cocina);
 			.wait(15000); //Tiempo en la cocina (ms)
 			-quiero_ir(comedor)[source(self)];
 			+quiero_ir(comedor)[source(self)].
-
+/*
 +quiero_ir(cocina)[source(A)]
 	: not ganas_ir(cocina, ninguna) & (A == self) & not habitaciones(cocina, abierta)
 		<-	.print("Mierda no puedo ir a la cocina...");
 			-quiero_ir(comedor)[source(self)];
 			+quiero_ir(comedor)[source(self)].
+*/
++quiero_ir(cocina)[source(A)]
+	: not ganas_ir(cocina, ninguna) & (A == self) & not habitaciones(cocina, abierta) & objetoManoDerecha(nada)
+		<-	.print("¡La puerta está cerrada!");
+			-quiero_ir(cocina)[source(self)];
+			!buscar(llave).
+			
++quiero_ir(cocina)[source(A)]
+	: not ganas_ir(cocina, ninguna) & (A == self) & not habitaciones(cocina, abierta) & objetoManoDerecha(llave)
+		<-	.print("Ya puedo abrir la puerta");
+			voy_a(fHlocation_puerta_cocina);
+			.wait(15000); // Tiempo en ir a la puerta de la cocina
+			.print("Está cerrada... ¡pero tengo la llave!");
+			.wait(1000); // Abirendo la puerta
+			-habitaciones(cocina,cerrada);
+			+habitaciones(cocina,abierta);
+			-quiero_ir(cocina)[source(self)];
+			+quiero_ir(cocina)[source(self)].
+			
++!buscar(A)
+	: A == llave
+	<- .print("Voy en pos de la llave");
+		voy_a(fHlocation_llave);
+		.wait(15000); // Tiempo en ir a por la llave
+		-objetoManoDerecha(nada);
+		+objetoManoDerecha(A);
+		+quiero_ir(cocina)[source(self)].
 		
+/**
 +quiero_ir(cocina)[source(A)]
 	: ganas_ir(cocina, ninguna) & not (A == self)
 		<- .print("Aunque ", A, " se ponga a hacer cosas en su escritorio, yo no pienso hacer nada").
+ 
 		
 +quiero_ir(cocina)[source(A)] 
 	: not ganas_ir(cocina, ninguna) & not (A == self) & habitaciones(cocina, abierta)
@@ -78,11 +120,29 @@ habitaciones(cocina, abierta).
 +quiero_ir(cocina)[source(A)] 
 	: not ganas_ir(cocina, ninguna) & not (A == self) & not habitaciones(cocina, abierta)
 		<- 	.print("Pues si ", A, " se pone en su escritorio, a mi me gustaria ir a la cocina a trabajar pero ", A," me ha cerrado la puerta").
-
+*/
 +cerrada(cocina)
 	<-	-habitaciones(cocina, abierta);
 		+habitaciones(cocina, cerrada).
-	
+
+//#############################################################
+//#############################################################
+//#############################################################
+
++quiero_ir(habitacion)[source(A)]
+	: ganas_ir(habitacion, ninguna) & (A == self)
+		<-	.print("No tengo que hacer nada en la habitación, me quedaré aquí de momento").
+
++quiero_ir(habitacion)[source(A)]
+	: not ganas_ir(habitacion, ninguna) & (A == self)
+		<-	.print("Voy a ir a la habitación a hacer mis movidas de monje");
+			voy_a(fHlocation_mesa_cuarto);
+			.wait(15000); //Tiempo en la cocina (ms)
+			-quiero_ir(capilla)[source(self)];
+			+quiero_ir(capilla)[source(self)].
+
+
+
 //+!invitarA
 //	<- 	.wait(15000); //15 segundos
 //		.print("Hola, frayFernando, ¿Vienes a comer conmigo?");
