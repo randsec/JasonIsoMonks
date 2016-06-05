@@ -14,6 +14,7 @@ public class Abadia extends Environment {
 	private static Abadia instance;
 	private Thread thread;
 	
+<<<<<<< HEAD
 	public Abadia() {
 		instance = this;
 		this.thread = null;
@@ -23,6 +24,9 @@ public class Abadia extends Environment {
 		return instance;
 	}
 	
+=======
+	@Override
+>>>>>>> 872586ef65108b2cdaeb4c2e7bb4e6cfbed57a40
 	public void init(String[] args) {
 		System.out.println("Jason BDI ready...");
 		//this.generateGhost();

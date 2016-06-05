@@ -9,11 +9,11 @@ ganas_ir(taller, muchas).
 //!go.
 
 /*Plans */
-//+!go : true
-//	<- .broadcast(tell,hello).
-	
-//+hello_from(Agent) : true
-//	<- .println("Yay! Heard from: ", Agent).
++!invitarA
+	<- 	mover_a(frayHector);
+		.wait(5000); //5 segundos
+		.print("Hola, frayHector, ¿Vienes a comer conmigo?").
+		/**  .send(frayFernando,tell,comer).*/
 
 +quiero_ir(capilla)  
 	: ganas_rezar(ninguna)
