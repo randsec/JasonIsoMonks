@@ -25,37 +25,22 @@ objetoManoIzquierda(nada).
 		<- 	.print("EH! la campana, me apetece ir a rezar");
 			voy_a(fHlocation_capilla);
 			.wait(15000); //Tiempo rezando (ms)
-			-quiero_ir(cocina)[source(self)];
-			+quiero_ir(cocina)[source(self)].
+			-+quiero_ir(cocina)[source(self)].
 		
 //#############################################################
 //#############################################################
 //#############################################################
 
-/*
-+quiero_ir(comedor)[source(A)] 
-	: ganas_ir(comedor, ninguna) & not (A == self)
-		<- .print("Creo haber visto a ", A, " entrar en el comedor, bah, serán imaginaciones mias...").
-*/
 +quiero_ir(comedor)[source(A)] 
 	: ganas_ir(comedor, ninguna) & (A == self)
 		<- .print("No me apetece ir a comer al comedor.").
-/*
-+quiero_ir(comedor)[source(A)] 
-	: not ganas_ir(comedor, ninguna) & not (A == self)
-		<- 	.print("Creo haber visto a ", A, " entrar en el comedor, voy a mirar si hay comida");
-			voy_a(fHlocation_comedor);
-			.wait(10000); //Tiempo en el comedor (ms)
-			-quiero_ir(capilla)[source(self)];
-			+quiero_ir(capilla)[source(self)].
-*/
+
 +quiero_ir(comedor)[source(A)] 
 	: not ganas_ir(comedor, ninguna) & (A == self)
 		<- 	.print("Ahora voy a ir a comer al comedor.");
 			voy_a(fHlocation_comedor);
 			.wait(10000); //Tiempo en el comedor (ms)
-			-quiero_ir(habitacion)[source(self)];
-			+quiero_ir(habitacion)[source(self)].
+			-+quiero_ir(habitacion)[source(self)].
 		
 //#############################################################
 //#############################################################
@@ -70,15 +55,8 @@ objetoManoIzquierda(nada).
 		<-	.print("Voy a ir a la cocina a trabajar un poco");
 			voy_a(fHlocation_cocina);
 			.wait(15000); //Tiempo en la cocina (ms)
-			-quiero_ir(comedor)[source(self)];
-			+quiero_ir(comedor)[source(self)].
-/*
-+quiero_ir(cocina)[source(A)]
-	: not ganas_ir(cocina, ninguna) & (A == self) & not habitaciones(cocina, abierta)
-		<-	.print("Mierda no puedo ir a la cocina...");
-			-quiero_ir(comedor)[source(self)];
-			+quiero_ir(comedor)[source(self)].
-*/
+			-+quiero_ir(comedor)[source(self)].
+
 +quiero_ir(cocina)[source(A)]
 	: not ganas_ir(cocina, ninguna) & (A == self) & not habitaciones(cocina, abierta) & objetoManoDerecha(nada)
 		<-	.print("¡La puerta está cerrada!");
@@ -92,18 +70,15 @@ objetoManoIzquierda(nada).
 			.wait(15000); // Tiempo en ir a la puerta de la cocina
 			.print("Está cerrada... ¡pero tengo la llave!");
 			.wait(1000); // Abirendo la puerta
-			-habitaciones(cocina,cerrada);
-			+habitaciones(cocina,abierta);
-			-quiero_ir(cocina)[source(self)];
-			+quiero_ir(cocina)[source(self)].
+			-+habitaciones(cocina,cerrada);
+			-+quiero_ir(cocina)[source(self)].
 			
 +!buscar(A)
 	: A == llave
 	<- .print("Voy en pos de la llave");
 		voy_a(fHlocation_llave);
 		.wait(15000); // Tiempo en ir a por la llave
-		-objetoManoDerecha(nada);
-		+objetoManoDerecha(A);
+		-+objetoManoDerecha(nada);
 		+quiero_ir(cocina)[source(self)].
 		
 /**
@@ -138,8 +113,7 @@ objetoManoIzquierda(nada).
 		<-	.print("Voy a ir a la habitación a hacer mis movidas de monje");
 			voy_a(fHlocation_mesa_cuarto);
 			.wait(15000); //Tiempo en la cocina (ms)
-			-quiero_ir(capilla)[source(self)];
-			+quiero_ir(capilla)[source(self)].
+			-+quiero_ir(capilla)[source(self)].
 
 
 
